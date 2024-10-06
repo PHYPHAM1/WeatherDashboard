@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+// import { stat } from 'fs';
 // import { response } from 'express';
 // import fs from 'node:fs/promises';
 
@@ -132,24 +133,31 @@ private buildForecastArray(weatherList: any[]): Weather[] {
   // TODO: Complete getWeatherForCity method
   // async getWeatherForCity(city: string) {}
 async getWeatherForCity(city: string) {
-    try {
-      const url = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.apiKey}`        // based url https://api.openweathermap.org
-      );
-      const weather = await url.json();      //??????
-      this.cityName = city;           //setting city to whatever user's put in
-      const coordinates = await this.fetchAndDestructureLocationData();       //then call this function..fetchAndDestructureLocationData
+  this.cityName = city;
+  const coordinates = await this.fetchAndDestructureLocationData();
+  const weatherData = await this.fetchWeatherData(coordinates as Coordinates);
+  const currentWeather = weatherData[0];
+  const forecast = this.buildForecastArray(weatherData as any);
+  return {currentWeather, forecast};
+
+    // try {
+    //   const url = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.apiKey}`        // based url https://api.openweathermap.org
+    //   );
+    //   await url.json();      //??????
+    //   this.cityName = city;           //setting city to whatever user's put in
+    //   const coordinates = await this.fetchAndDestructureLocationData();       //then call this function..fetchAndDestructureLocationData
       
-      if(!coordinates){
-        throw new Error('missing coordinates');
-      }
-      const weatherData = await this.fetchWeatherData(coordinates);
-      return weatherData;
+    //   if(!coordinates){
+    //     throw new Error('missing coordinates');
+    //   }
+    //   const weatherData = await this.fetchWeatherData(coordinates);
+    //   return weatherData;
       
 
-    } catch (error) {
-      console.log('Error:', error);
-      return undefined; // Ensure a value is returned in case of error
-    } 
+    // } catch (error) {
+    //   console.log('Error:', error);
+    //   return undefined; // Ensure a value is returned in case of error
+    // } 
     
   }
   
