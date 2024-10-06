@@ -133,6 +133,7 @@ private buildForecastArray(weatherList: any[]): Weather[] {
   // TODO: Complete getWeatherForCity method
   // async getWeatherForCity(city: string) {}
 async getWeatherForCity(city: string) {
+  //trying different way
   this.cityName = city;
   const coordinates = await this.fetchAndDestructureLocationData();
   const weatherData = await this.fetchWeatherData(coordinates as Coordinates);
